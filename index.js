@@ -1,9 +1,9 @@
 var curl = require('curlrequest') ;
 
 module.exports = function (access_token) {
-
+	var access_token_2 = access_token ;
 	var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + access_token ;
-	var answer = '' ;
+	var ID = '' ;
 	var languages = {
 		'Ada': 7,
 		'Nasm': 13,
@@ -62,28 +62,43 @@ module.exports = function (access_token) {
 
 	var methods = {
 		Run: function (code,lang,inp) {
-			var info = {
+			var infoRun = {
 				'sourceCode': code,
 				'language': languages[lang],
 				'input': inp
 			} ;	
-			var options = {
+			var optionsRun = {
 				method: 'POST',
 				url: compileUrl,
-				data: info
+				data: infoRun
 			} ;
 
-			curl.request(options, function (error, response) {
-				setTimeout(function () {
-					return response ;
-				}, 2000) ;
-
+			curl.request(optionsRun, function (error, response) {
+				console.log(response);
 			}) ;
 
-		}
-		//showDetails: function () {
+		},
+		showDetails: function () {
+			var showUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'+ID+'?access_token='+access_token_2 ;
 
-		//}
+			var infoShow = {
+				'id': ID,
+				'withSource': true,
+				'withInput': true,
+				'withOutput': true,
+				'withStderr': true,
+				'withCmpinfo': true 
+			} ;
+			var optionsShow = {
+				method: 'GET',
+				url: showUrl,
+				data: infoShow
+			} ;
+
+			curl.request(optionsShow, function (error2,response2) {
+				console.log(response2) ;
+			}) ;
+		}
 	} ;
 
 	return methods ;

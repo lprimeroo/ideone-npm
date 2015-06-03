@@ -1,6 +1,6 @@
 {
   "name": "ideone-npm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A node package that allows you to compile your code remotely using Ideone's Sphere Engine .",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,9 @@
   },
   "author": "Sarthak Munshi <sarthakmunshi@gmail.com> (http://sarthakm.me/)",
   "license": "MIT",
+  "dependencies": {
+      "curlrequest": "0.5.2"
+    },
   "bugs": {
     "url": "https://github.com/saru95/ideone-npm/issues"
   },

@@ -4,7 +4,6 @@ module.exports = function (access_token) {
 	var access_token_2 = access_token ;
 	var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + access_token ;
 	var ID = '' ;
-	var value = '' ;
 	var languages = {
 		'Ada': 7,
 		'Nasm': 13,
@@ -84,26 +83,35 @@ module.exports = function (access_token) {
 		showDetails: function () {
 			setTimeout(function ()
 			{
+
 					var showUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID) ;
 					var showUrl2 = '?access_token='.concat(access_token_2) ;
 					var showUrl = showUrl1.concat(showUrl2) ;
 
-					var infoShow = {
-						'id': ID,
-						'withSource': true,
-						'withInput': true,
-						'withOutput': true,
-						'withStderr': true,
-						'withCmpinfo': true 
-					} ;
-					var optionsShow = {
+					var showUrlWithParameters = showUrl + "&withSource=1&withInput=1&withOutput=1&withStderr=1&withCmpinfo=1" ;
+
+					var optionsShow1 = {
 						method: 'GET',
-						url: showUrl,
-						data: infoShow
+						url: showUrl
 					} ;
-		
-						curl.request(optionsShow, function (error2,response2) {
-									console.log(response2) ;
+
+					var optionsShow2 = {
+						method: 'GET',
+						url: showUrlWithParameters
+					} ;
+
+						curl.request(optionsShow1, function (error2,response2) {
+									var parsedStatusChecker = JSON.parse(response2) ;
+									if(parsedStatusChecker.status!=0){
+										showDetails() ;
+									}
+									else{
+										curl.request(optionsShow2,function (error3,response3) {
+											var answerObject = JSON.parse(response3) ;
+											exports.answerObject = answerObject ;
+											console.log(answerObject) ;
+										}) ;
+									}
 								}) ;
 					},6000);
 		}

@@ -1,6 +1,6 @@
-#ideone-npm
+# ideone-npm
 
-##Installation
+## Installation
 
 Global:
 `npm install -g ideone-npm`
@@ -8,7 +8,7 @@ Global:
 Local:
 `npm install ideone-npm`
 
-##Usage
+## Usage
 ```
 var Compile = require('ideone-npm') ;
 
@@ -38,5 +38,4 @@ compile.showDetails() ;
 ```
 
 ##Output
-![]
-(http://i57.tinypic.com/331oscw.jpg)
+![](http://i57.tinypic.com/331oscw.jpg)

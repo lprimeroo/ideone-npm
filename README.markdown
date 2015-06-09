@@ -9,7 +9,8 @@ Local:
 `npm install ideone-npm`
 
 ## Usage
-```
+
+```js
 var Compile = require('ideone-npm') ;
 
 //In goes your API access token

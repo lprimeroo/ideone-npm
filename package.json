@@ -1,6 +1,6 @@
 {
   "name": "ideone-npm",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A node package that allows you to compile your code remotely using Ideone's Sphere Engine .",
   "main": "index.js",
   "scripts": {

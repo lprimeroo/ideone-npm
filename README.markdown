@@ -1,6 +1,6 @@
 # ideone-npm
 
-	[![](https://nodei.co/npm/ideone-npm.png?downloads=true)](https://nodei.co/npm/ideone-npm/)
+[![](https://nodei.co/npm/ideone-npm.png?downloads=true)](https://nodei.co/npm/ideone-npm/)
 ## Installation
 
 Global:

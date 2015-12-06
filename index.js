@@ -1,9 +1,10 @@
-var curl = require('curlrequest') ;
+var curl = require('curlrequest') 
 
-module.exports = function (access_token) {
-	var access_token_2 = access_token ;
+module.exports = function(access_token) {
 	var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + access_token ;
 	var ID = '' ;
+	var answer = {} 
+	var boolResult = true
 	var languages = {
 		'Ada': 7,
 		'Nasm': 13,
@@ -58,64 +59,72 @@ module.exports = function (access_token) {
 		'Tcl': 38,
 		'Unlambda': 115,
 		'VB.NET': 101
-	} ;
+	}
 
-	var methods = {
-		Run: function (code,lang,inp) {
+	var subRoutines = {
+		Run: function (code,lang,inp,callback) {
 			var infoRun = {
 				'sourceCode': code,
 				'language': languages[lang],
 				'input': inp
-			} ;	
+			} 
 			var optionsRun = {
 				method: 'POST',
 				url: compileUrl,
 				data: infoRun
-			} ;
+			}
 
 			curl.request(optionsRun, function (error, response) {
-				setTimeout(function () {
-					ID = JSON.parse(response).id ;
-				},3000) ;
-			}) ;
+					ID += JSON.parse(response).id
+					var reqUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID)
+					var reqUrl2 = '?access_token='.concat(access_token)
+					var reqUrl12 = reqUrl1.concat(reqUrl2)
 
+					var reqUrl = reqUrl12 + "&withSource=1&withInput=1&withOutput=1&withStderr=1&withCmpinfo=1"
+
+					var optionsRecv = {
+						method: 'GET',
+						url: reqUrl12
+					}
+
+					var optionsRecv2 = {
+						method: 'GET',
+						url: reqUrl
+					}
+
+					curl.request(optionsRecv, function (error2,response2) {
+						var statuscheck = JSON.parse(response2)
+						if(statuscheck.status == 0){
+							curl.request(optionsRecv2,function (error3,response3) {
+								var answerObject = JSON.parse(response3)
+								answer = answerObject
+								boolResult = false
+								return callback(answer, boolResult)
+							})
+						}
+						else {
+							setTimeout(function() {
+								curl.request(optionsRecv, function (error2,response2) {
+									var statuscheck = JSON.parse(response2) 
+									if(statuscheck.status == 0){
+										curl.request(optionsRecv2,function (error3,response3) {
+											var answerObject = JSON.parse(response3)
+											answer = answerObject
+											boolResult = false
+											return callback(answer, boolResult)
+										})
+									}
+								})	
+							},4500)
+						}								
+					})
+			})
 		},
-		showDetails: function () {
-			setTimeout(function ()
-			{
 
-					var showUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID) ;
-					var showUrl2 = '?access_token='.concat(access_token_2) ;
-					var showUrl = showUrl1.concat(showUrl2) ;
-
-					var showUrlWithParameters = showUrl + "&withSource=1&withInput=1&withOutput=1&withStderr=1&withCmpinfo=1" ;
-
-					var optionsShow1 = {
-						method: 'GET',
-						url: showUrl
-					} ;
-
-					var optionsShow2 = {
-						method: 'GET',
-						url: showUrlWithParameters
-					} ;
-
-						curl.request(optionsShow1, function (error2,response2) {
-									var parsedStatusChecker = JSON.parse(response2) ;
-									if(parsedStatusChecker.status!=0){
-										showDetails() ;
-									}
-									else{
-										curl.request(optionsShow2,function (error3,response3) {
-											var answerObject = JSON.parse(response3) ;
-											exports.answerObject = answerObject ;
-											console.log(answerObject) ;
-										}) ;
-									}
-								}) ;
-					},6000);
+		languageSupport: function(callback2) {
+			callback2(languages)
 		}
-	} ;
+	}
 
-	return methods ;
+	return subRoutines ;
 }

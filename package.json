@@ -4,7 +4,7 @@
   "description": "A node package that allows you to compile your code remotely using Ideone's Sphere Engine .",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose"
   },
   "repository": {
     "type": "git",
@@ -13,10 +13,13 @@
   "author": "Sarthak Munshi <sarthakmunshi@gmail.com> (http://sarthakm.me/)",
   "license": "MIT",
   "dependencies": {
-      "curlrequest": "0.5.2"
-    },
+    "curlrequest": "0.5.2"
+  },
   "bugs": {
     "url": "https://github.com/saru95/ideone-npm/issues"
   },
-  "homepage": "https://github.com/saru95/ideone-npm"
+  "homepage": "https://github.com/saru95/ideone-npm",
+  "devDependencies": {
+    "ava": "^0.16.0"
+  }
 }

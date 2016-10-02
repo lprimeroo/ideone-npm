@@ -1,4 +1,4 @@
-var Compile = require('./index2.js')
+var Compile = require('../index.js')
 
 compile = Compile('b11bf50b8a391d4e8560e97fd9d63460')
 

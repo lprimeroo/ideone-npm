@@ -9,9 +9,9 @@ npm install ideone-npm
 ## Usage
 
 ```js
-var Compile = require('./index2.js')
+var Compile = require('ideone-npm')
 
-compile = Compile('b11bf50b8a391d4e8560e97fd9d63460')
+compile = Compile('API_TOKEN')
 
 //Source Code to be compiled remotely
 var sourceCode = 'print 3*20' 

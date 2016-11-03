@@ -3,7 +3,7 @@
 [![](https://nodei.co/npm/ideone-npm.png?downloads=true)](https://nodei.co/npm/ideone-npm/)
 ## Installation
 ```
-npm install ideone-npm
+$ sudo npm install ideone-npm
 ```
 
 ## Usage
@@ -24,10 +24,7 @@ var testCases = ''
 
 //'Run' routine compiles the code and return the answer object
 compile.Run(sourceCode,language,testCases, function(answer, error){
-	console.log(answer.langId)
-	console.log(answer.langName)
-	console.log(answer.output)
-	console.log(answer.source)
+	// returns compiled answer object	
 })
 
 // Languages Supported by the API
@@ -64,3 +61,5 @@ compile.languageSupport(function(languages) {
 
 ## Output
 ![](http://i57.tinypic.com/331oscw.jpg)
+
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)

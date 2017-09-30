@@ -12,14 +12,14 @@ var language = 'Python'
 var testCases = ''
 
 //'Run' routine compiles the code and return the answer object
-compile.Run(sourceCode,language,testCases, function(answer, error){
+compile.Run(sourceCode,language,testCases).then(function(answer){
 	console.log(answer.langId)
 	console.log(answer.langName)
 	console.log(answer.output)
 	console.log(answer.source)
-})
+});
 
 // Languages Supported by the API
-compile.languageSupport(function(languages) {
+compile.languageSupport().then(function(languages) {
 	console.log(languages)
-})
+});

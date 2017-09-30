@@ -62,7 +62,7 @@ module.exports = function (access_token) {
   }
 
   var subRoutines = {
-    Run: function (code, lang, inp, callback) {
+    Run: function (code, lang, inp) {
       var infoRun = {
         'sourceCode': code,
         'language': languages[lang],
@@ -73,55 +73,55 @@ module.exports = function (access_token) {
         url: compileUrl,
         data: infoRun
       }
-
-      curl.request(optionsRun, function (error, response) {
-        ID += JSON.parse(response).id
-        var reqUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID)
-        var reqUrl2 = '?access_token='.concat(access_token)
-        var reqUrl12 = reqUrl1.concat(reqUrl2)
-
-        var reqUrl = reqUrl12 + '&withSource=1&withInput=1&withOutput=1&withStderr=1&withCmpinfo=1'
-
-        var optionsRecv = {
-          method: 'GET',
-          url: reqUrl12
-        }
-
-        var optionsRecv2 = {
-          method: 'GET',
-          url: reqUrl
-        }
-
-        curl.request(optionsRecv, function (error2, response2) {
-          var statuscheck = JSON.parse(response2)
-          if (statuscheck.status == 0) {
-            curl.request(optionsRecv2, function (error3, response3) {
-              var answerObject = JSON.parse(response3)
-              answer = answerObject
-              boolResult = false
-              return callback(answer, boolResult)
-            })
-          }else {
-            setTimeout(function () {
-              curl.request(optionsRecv, function (error2, response2) {
-                var statuscheck = JSON.parse(response2)
-                if (statuscheck.status == 0) {
-                  curl.request(optionsRecv2, function (error3, response3) {
-                    var answerObject = JSON.parse(response3)
-                    answer = answerObject
-                    boolResult = false
-                    return callback(answer, boolResult)
-                  })
-                }
-              })
-            }, 4500)
+      return new Promise((resolve, reject) => {
+        curl.request(optionsRun, function (error, response) {
+          ID += JSON.parse(response).id
+          var reqUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID)
+          var reqUrl2 = '?access_token='.concat(access_token)
+          var reqUrl12 = reqUrl1.concat(reqUrl2)
+  
+          var reqUrl = reqUrl12 + '&withSource=1&withInput=1&withOutput=1&withStderr=1&withCmpinfo=1'
+  
+          var optionsRecv = {
+            method: 'GET',
+            url: reqUrl12
           }
+  
+          var optionsRecv2 = {
+            method: 'GET',
+            url: reqUrl
+          }
+          curl.request(optionsRecv, function (error2, response2) {
+            var statuscheck = JSON.parse(response2)
+            if (statuscheck.status == 0) {
+              curl.request(optionsRecv2, function (error3, response3) {
+                var answerObject = JSON.parse(response3)
+                answer = answerObject
+                resolve(answer);
+              })
+            }else {
+              setTimeout(function () {
+                curl.request(optionsRecv, function (error2, response2) {
+                  var statuscheck = JSON.parse(response2)
+                  if (statuscheck.status == 0) {
+                    curl.request(optionsRecv2, function (error3, response3) {
+                      var answerObject = JSON.parse(response3)
+                      answer = answerObject
+                      resolve(answer);
+                    })
+                  }
+                })
+              }, 4500)
+            }
+          })
         })
-      })
+      });
     },
 
-    languageSupport: function (callback2) {
-      callback2(languages)
+    languageSupport: function () {
+      return new Promise((resolve, reject) => {
+        resolve(languages);
+      })
     }
   }
 

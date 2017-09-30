@@ -2,8 +2,6 @@ var curl = require('curlrequest')
 
 module.exports = function (access_token) {
   var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + access_token
-  var ID = ''
-  var answer = {}
   var languages = {
     'Ada': 7,
     'Nasm': 13,
@@ -80,7 +78,7 @@ module.exports = function (access_token) {
             return 
           }
 
-          ID += JSON.parse(response).id
+          var ID = JSON.parse(response).id
           var reqUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID)
           var reqUrl2 = '?access_token='.concat(access_token)
           var reqUrl12 = reqUrl1.concat(reqUrl2)

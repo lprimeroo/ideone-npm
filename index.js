@@ -140,9 +140,7 @@ module.exports = function (access_token) {
     },
 
     languageSupport: function () {
-      return new Promise((resolve, reject) => {
-        resolve(languages);
-      })
+      return Promise.resolve(languages)
     }
   }
 

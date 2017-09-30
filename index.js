@@ -4,7 +4,6 @@ module.exports = function (access_token) {
   var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + access_token
   var ID = ''
   var answer = {}
-  var boolResult = true
   var languages = {
     'Ada': 7,
     'Nasm': 13,

@@ -97,6 +97,13 @@ module.exports = function (access_token) {
             url: reqUrl
           }
 
+          var requestProcessCallback = function(error, response) {
+            if (error) {
+              reject(error)
+              return
+            }
+            resolve(JSON.parse(response))
+          }
 
           curl.request(optionsRecv, function (error2, response2) {
             if (error2) {
@@ -105,14 +112,8 @@ module.exports = function (access_token) {
 
             var statuscheck = JSON.parse(response2)
             if (statuscheck.status == 0) {
-              curl.request(optionsRecv2, function (error3, response3) {
-                if (error3) {
-                  reject(error3)
-                  return
-                }
-                resolve(JSON.parse(response3))
-              })
-            }else {
+              curl.request(optionsRecv2, requestProcessCallback)
+            } else {
               setTimeout(function () {
                 curl.request(optionsRecv, function (error2, response2) {
                   if (error2) {
@@ -122,13 +123,7 @@ module.exports = function (access_token) {
 
                   var statuscheck = JSON.parse(response2)
                   if (statuscheck.status == 0) {
-                    curl.request(optionsRecv2, function (error3, response3) {
-                      if (error3) {
-                        reject(error3)
-                        return
-                      }
-                      resolve(JSON.parse(response3))
-                    })
+                    curl.request(optionsRecv2, requestProcessCallback)
                   }
                 })
               }, 4500)

@@ -1,7 +1,7 @@
 var curl = require('curlrequest')
 
-module.exports = function (access_token) {
-  var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + access_token
+module.exports = function (accessToken) {
+  var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + accessToken
   var languages = {
     'Ada': 7,
     'Nasm': 13,
@@ -75,27 +75,27 @@ module.exports = function (access_token) {
         curl.request(optionsRun, function (error, response) {
           if (error) {
             reject(error)
-            return 
+            return
           }
 
           var ID = JSON.parse(response).id
           var reqUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID)
-          var reqUrl2 = '?access_token='.concat(access_token)
+          var reqUrl2 = '?access_token='.concat(accessToken)
           var reqUrl12 = reqUrl1.concat(reqUrl2)
-  
+
           var reqUrl = reqUrl12 + '&withSource=1&withInput=1&withOutput=1&withStderr=1&withCmpinfo=1'
-  
+
           var optionsRecv = {
             method: 'GET',
             url: reqUrl12
           }
-  
+
           var optionsRecv2 = {
             method: 'GET',
             url: reqUrl
           }
 
-          var requestProcessCallback = function(error, response) {
+          var requestProcessCallback = function (error, response) {
             if (error) {
               reject(error)
               return
@@ -109,7 +109,7 @@ module.exports = function (access_token) {
             }
 
             var statuscheck = JSON.parse(response2)
-            if (statuscheck.status == 0) {
+            if (statuscheck.status === 0) {
               curl.request(optionsRecv2, requestProcessCallback)
             } else {
               setTimeout(function () {
@@ -120,7 +120,7 @@ module.exports = function (access_token) {
                   }
 
                   var statuscheck = JSON.parse(response2)
-                  if (statuscheck.status == 0) {
+                  if (statuscheck.status === 0) {
                     curl.request(optionsRecv2, requestProcessCallback)
                   }
                 })
@@ -128,7 +128,7 @@ module.exports = function (access_token) {
             }
           })
         })
-      });
+      })
     },
 
     languageSupport: function () {

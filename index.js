@@ -73,8 +73,14 @@ module.exports = function (access_token) {
         url: compileUrl,
         data: infoRun
       }
+
       return new Promise((resolve, reject) => {
         curl.request(optionsRun, function (error, response) {
+          if (error) {
+            reject(error)
+            return 
+          }
+
           ID += JSON.parse(response).id
           var reqUrl1 = 'http://api.compilers.sphere-engine.com/api/v3/submissions/'.concat(ID)
           var reqUrl2 = '?access_token='.concat(access_token)
@@ -91,23 +97,38 @@ module.exports = function (access_token) {
             method: 'GET',
             url: reqUrl
           }
+
+
           curl.request(optionsRecv, function (error2, response2) {
+            if (error2) {
+              reject(error)
+            }
+
             var statuscheck = JSON.parse(response2)
             if (statuscheck.status == 0) {
               curl.request(optionsRecv2, function (error3, response3) {
-                var answerObject = JSON.parse(response3)
-                answer = answerObject
-                resolve(answer);
+                if (error3) {
+                  reject(error3)
+                  return
+                }
+                resolve(JSON.parse(response3))
               })
             }else {
               setTimeout(function () {
                 curl.request(optionsRecv, function (error2, response2) {
+                  if (error2) {
+                    reject(error2)
+                    return
+                  }
+
                   var statuscheck = JSON.parse(response2)
                   if (statuscheck.status == 0) {
                     curl.request(optionsRecv2, function (error3, response3) {
-                      var answerObject = JSON.parse(response3)
-                      answer = answerObject
-                      resolve(answer);
+                      if (error3) {
+                        reject(error3)
+                        return
+                      }
+                      resolve(JSON.parse(response3))
                     })
                   }
                 })

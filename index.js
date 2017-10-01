@@ -1,6 +1,6 @@
 var curl = require('curlrequest')
 
-module.exports = function(accessToken) {
+module.exports = function (accessToken) {
   var compileUrl = 'http://api.compilers.sphere-engine.com/api/v3/submissions?access_token=' + accessToken
   var languages = {
     'Ada': 7,
@@ -59,7 +59,7 @@ module.exports = function(accessToken) {
   }
 
   var subRoutines = {
-    Run: function(code, lang, inp) {
+    Run: function (code, lang, inp) {
       var infoRun = {
         'sourceCode': code,
         'language': languages[lang],
@@ -72,7 +72,7 @@ module.exports = function(accessToken) {
       }
 
       return new Promise((resolve, reject) => {
-        curl.request(optionsRun, function(error, response) {
+        curl.request(optionsRun, function (error, response) {
           if (error) {
             reject(error)
             return
@@ -95,7 +95,7 @@ module.exports = function(accessToken) {
             url: reqUrl
           }
 
-          var requestProcessCallback = function(error, response) {
+          var requestProcessCallback = function (error, response) {
             if (error) {
               reject(error)
               return
@@ -103,7 +103,7 @@ module.exports = function(accessToken) {
             resolve(JSON.parse(response))
           }
 
-          curl.request(optionsRecv, function(error2, response2) {
+          curl.request(optionsRecv, function (error2, response2) {
             if (error2) {
               reject(error)
             }
@@ -112,8 +112,8 @@ module.exports = function(accessToken) {
             if (statuscheck.status === 0) {
               curl.request(optionsRecv2, requestProcessCallback)
             } else {
-              setTimeout(function() {
-                curl.request(optionsRecv, function(error2, response2) {
+              setTimeout(function () {
+                curl.request(optionsRecv, function (error2, response2) {
                   if (error2) {
                     reject(error2)
                     return
@@ -131,7 +131,7 @@ module.exports = function(accessToken) {
       })
     },
 
-    languageSupport: function() {
+    languageSupport: function () {
       return Promise.resolve(languages)
     }
   }

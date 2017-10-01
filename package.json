@@ -4,7 +4,7 @@
   "description": "A node package that allows you to compile your code remotely using Ideone's Sphere Engine .",
   "main": "index.js",
   "scripts": {
-    "test": "ava --verbose",
+    "test": "ava ./tests/* --verbose",
     "lint": "standard"
   },
   "repository": {

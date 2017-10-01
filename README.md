@@ -1,6 +1,8 @@
 # ideone-npm
 
 [![](https://nodei.co/npm/ideone-npm.png?downloads=true)](https://nodei.co/npm/ideone-npm/)
+[![Build Status](https://travis-ci.org/saru95/ideone-npm.svg?branch=master)](https://travis-ci.org/saru95/ideone-npm)
+
 ## Installation
 ```
 $ sudo npm install ideone-npm
